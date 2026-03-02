@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sudoku Solver</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Sudoku Solver</h1>
+
+<div id="sudoku-board">
+    <!-- 81 cells -->
+    <!-- Row 1 -->
+    <input type="text" maxlength="1">
+    <input type="text" maxlength="1">
+    <input type="text" maxlength="1">
+    <input type="text" maxlength="1">
+    <input type="text" maxlength="1">
+    <input type="text" maxlength="1">
+    <input type="text" maxlength="1">
+    <input type="text" maxlength="1">
+    <input type="text" maxlength="1">
+
+    <!-- Repeat this block 8 more times (total 81 inputs) -->
+</div>
+
+<div class="buttons">
+    <button onclick="solve()">Solve</button>
+    <button onclick="clearBoard()">Clear</button>
+</div>
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+}
+
+#sudoku-board {
+    display: grid;
+    grid-template-columns: repeat(9, 45px);
+    gap: 2px;
+    margin: 20px auto;
+    width: fit-content;
+}
+
+#sudoku-board input {
+    width: 45px;
+    height: 45px;
+    text-align: center;
+    font-size: 18px;
+    border: 1px solid #555;
+    outline: none;
+}
+
+/* Thicker borders for 3x3 grids */
+#sudoku-board input:nth-child(3n) {
+    border-right: 2px solid black;
+}
+
+#sudoku-board input:nth-child(n+19):nth-child(-n+27),
+#sudoku-board input:nth-child(n+46):nth-child(-n+54) {
+    border-bottom: 2px solid black;
+}
+
+.buttons {
+    margin-top: 15px;
+}
+
+button {
+    padding: 8px 16px;
+    font-size: 16px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+
+<script src="script.js"></script>
+</body>
+</html>

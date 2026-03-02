@@ -1,0 +1,16 @@
+if the number is  the power of 2 then it will have only one 1 in its binary format
+so it we will and(&) the binary form of N and Binary form of N-1 then we will get get all zero then it is else it is not 
+
+
+1 1 0 1
+1 1 0 0
+-------      so this is not the power of 2
+1 1 0 0 
+
+
+
+1 0 0 0 0 
+0 1 1 1 1 
+--------- so this is the power of 2
+0 0 0 0 0
+
