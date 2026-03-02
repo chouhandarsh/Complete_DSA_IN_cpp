@@ -1,0 +1,359 @@
+import React, { useState, useEffect } from 'react';
+import { Menu, X, Shield, Cloud, Code, Database, Settings, Users, LogIn, LogOut, Image as ImageIcon, Trash2 } from 'lucide-react';
+
+const TechSolutionWebsite = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState('home');
+  const [user, setUser] = useState(null);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [loginForm, setLoginForm] = useState({ username: '', password: '' });
+  const [gallery, setGallery] = useState([
+    { id: 1, url: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800', title: 'Team Collaboration' },
+    { id: 2, url: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800', title: 'Modern Office' },
+    { id: 3, url: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800', title: 'Innovation Hub' },
+    { id: 4, url: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800', title: 'Strategic Planning' },
+    { id: 5, url: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800', title: 'Data Analytics' },
+    { id: 6, url: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800', title: 'Tech Solutions' }
+  ]);
+  const [newImageUrl, setNewImageUrl] = useState('');
+  const [newImageTitle, setNewImageTitle] = useState('');
+
+  const services = [
+    { icon: Cloud, title: 'Cloud Solutions', desc: 'Scalable cloud infrastructure and migration services' },
+    { icon: Shield, title: 'Cybersecurity', desc: 'Advanced security solutions to protect your business' },
+    { icon: Code, title: 'Custom Development', desc: 'Tailored software solutions for your unique needs' },
+    { icon: Database, title: 'Data Management', desc: 'Efficient data storage and analytics solutions' }
+  ];
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (loginForm.username === 'admin' && loginForm.password === 'admin123') {
+      setUser({ username: 'admin', role: 'admin' });
+      setShowLoginModal(false);
+      setLoginForm({ username: '', password: '' });
+    } else if (loginForm.username === 'user' && loginForm.password === 'user123') {
+      setUser({ username: 'user', role: 'user' });
+      setShowLoginModal(false);
+      setLoginForm({ username: '', password: '' });
+    } else {
+      alert('Invalid credentials! Try: admin/admin123 or user/user123');
+    }
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    setCurrentPage('home');
+  };
+
+  const addImage = () => {
+    if (newImageUrl && newImageTitle) {
+      setGallery([...gallery, { 
+        id: Date.now(), 
+        url: newImageUrl, 
+        title: newImageTitle 
+      }]);
+      setNewImageUrl('');
+      setNewImageTitle('');
+    }
+  };
+
+  const deleteImage = (id) => {
+    setGallery(gallery.filter(img => img.id !== id));
+  };
+
+  const navigateTo = (page) => {
+    setCurrentPage(page);
+    setMenuOpen(false);
+  };
+
+  return 
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-[#1a2847] text-white sticky top-0 z-50 shadow-lg">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between py-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center">
+                <svg viewBox="0 0 100 100" className="w-10 h-10">
+                  <path d="M20 30 L50 30 L50 20 L80 40 L50 60 L50 50 L20 50 Z" fill="#1a2847"/>
+                  <path d="M20 70 L50 70 L50 80 L80 60 L50 40 L50 50 L20 50 Z" fill="#1a2847"/>
+                </svg>
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold">Tech Solution</h1>
+                <p className="text-xs text-blue-200">IT Services & Solutions</p>
+              </div>
+            </div>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center space-x-6">
+              <button onClick={() => navigateTo('home')} className="hover:text-blue-300 transition">Home</button>
+              <button onClick={() => navigateTo('services')} className="hover:text-blue-300 transition">Services</button>
+              <button onClick={() => navigateTo('gallery')} className="hover:text-blue-300 transition">Gallery</button>
+              <button onClick={() => navigateTo('about')} className="hover:text-blue-300 transition">About</button>
+              <button onClick={() => navigateTo('contact')} className="hover:text-blue-300 transition">Contact</button>
+              
+              {user ? (
+                <div className="flex items-center space-x-3">
+                  <span className="text-sm bg-blue-600 px-3 py-1 rounded-full">{user.username} ({user.role})</span>
+                  <button onClick={handleLogout} className="flex items-center space-x-1 hover:text-blue-300">
+                    <LogOut size={18} />
+                    <span>Logout</span>
+                  </button>
+                </div>
+              ) : (
+                <button onClick={() => setShowLoginModal(true)} className="flex items-center space-x-1 bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                  <LogIn size={18} />
+                  <span>Login</span>
+                </button>
+              )}
+            </nav>
+
+            {/* Mobile Menu Button */}
+            <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden">
+              {menuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+
+          {/* Mobile Navigation */}
+          {menuOpen && (
+            <nav className="md:hidden pb-4 space-y-2">
+              <button onClick={() => navigateTo('home')} className="block w-full text-left py-2 hover:bg-blue-900 px-2 rounded">Home</button>
+              <button onClick={() => navigateTo('services')} className="block w-full text-left py-2 hover:bg-blue-900 px-2 rounded">Services</button>
+              <button onClick={() => navigateTo('gallery')} className="block w-full text-left py-2 hover:bg-blue-900 px-2 rounded">Gallery</button>
+              <button onClick={() => navigateTo('about')} className="block w-full text-left py-2 hover:bg-blue-900 px-2 rounded">About</button>
+              <button onClick={() => navigateTo('contact')} className="block w-full text-left py-2 hover:bg-blue-900 px-2 rounded">Contact</button>
+              {user ? (
+                <>
+                  <div className="text-sm bg-blue-600 px-3 py-2 rounded">{user.username} ({user.role})</div>
+                  <button onClick={handleLogout} className="block w-full text-left py-2 hover:bg-blue-900 px-2 rounded">Logout</button>
+                </>
+              ) : (
+                <button onClick={() => setShowLoginModal(true)} className="block w-full text-left py-2 bg-blue-600 px-2 rounded">Login</button>
+              )}
+            </nav>
+          )}
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="container mx-auto px-4 py-8">
+        {/* Home Page */}
+        {currentPage === 'home' && (
+          <div>
+            <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-2xl p-12 mb-8 shadow-xl">
+              <h2 className="text-4xl md:text-5xl font-bold mb-4">Welcome to Tech Solution</h2>
+              <p className="text-xl mb-6">Your trusted partner in digital transformation and IT excellence</p>
+              <button onClick={() => navigateTo('contact')} className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
+                Get Started
+              </button>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {services.map((service, idx) => (
+                <div key={idx} className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition">
+                  <service.icon className="w-12 h-12 text-blue-600 mb-4" />
+                  <h3 className="text-xl font-bold mb-2">{service.title}</h3>
+                  <p className="text-gray-600">{service.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Services Page */}
+        {currentPage === 'services' && (
+          <div>
+            <h2 className="text-4xl font-bold mb-8 text-gray-800">Our Services</h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              {services.map((service, idx) => (
+                <div key={idx} className="bg-white p-8 rounded-xl shadow-lg">
+                  <service.icon className="w-16 h-16 text-blue-600 mb-4" />
+                  <h3 className="text-2xl font-bold mb-3">{service.title}</h3>
+                  <p className="text-gray-600 mb-4">{service.desc}</p>
+                  <ul className="space-y-2 text-gray-700">
+                    <li>• Professional implementation</li>
+                    <li>• 24/7 support and maintenance</li>
+                    <li>• Scalable solutions</li>
+                    <li>• Cost-effective pricing</li>
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Gallery Page */}
+        {currentPage === 'gallery' && (
+          <div>
+            <h2 className="text-4xl font-bold mb-8 text-gray-800">Gallery</h2>
+            
+            {user?.role === 'admin' && (
+              <div className="bg-white p-6 rounded-xl shadow-lg mb-8">
+                <h3 className="text-xl font-bold mb-4 flex items-center">
+                  <Settings className="mr-2" /> Admin Panel - Add Image
+                </h3>
+                <div className="space-y-4">
+                  <input
+                    type="text"
+                    placeholder="Image URL"
+                    value={newImageUrl}
+                    onChange={(e) => setNewImageUrl(e.target.value)}
+                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Image Title"
+                    value={newImageTitle}
+                    onChange={(e) => setNewImageTitle(e.target.value)}
+                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  />
+                  <button onClick={addImage} className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+                    Add Image
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {gallery.map((img) => (
+                <div key={img.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition">
+                  <img src={img.url} alt={img.title} className="w-full h-64 object-cover" />
+                  <div className="p-4">
+                    <h3 className="font-semibold text-lg">{img.title}</h3>
+                    {user?.role === 'admin' && (
+                      <button 
+                        onClick={() => deleteImage(img.id)} 
+                        className="mt-2 flex items-center text-red-600 hover:text-red-800"
+                      >
+                        <Trash2 size={16} className="mr-1" /> Delete
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* About Page */}
+        {currentPage === 'about' && (
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-4xl font-bold mb-8 text-gray-800">About Tech Solution</h2>
+            <div className="bg-white p-8 rounded-xl shadow-lg">
+              <p className="text-gray-700 mb-4 leading-relaxed">
+                Tech Solution is a leading IT services company dedicated to helping businesses thrive in the digital age. 
+                With over a decade of experience, we provide cutting-edge technology solutions tailored to your unique needs.
+              </p>
+              <p className="text-gray-700 mb-4 leading-relaxed">
+                Our team of expert professionals is committed to delivering excellence in cloud computing, cybersecurity, 
+                custom software development, and data management. We partner with businesses of all sizes to transform 
+                their operations and achieve sustainable growth.
+              </p>
+              <div className="grid md:grid-cols-3 gap-6 mt-8">
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-blue-600 mb-2">500+</div>
+                  <div className="text-gray-600">Projects Completed</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-blue-600 mb-2">200+</div>
+                  <div className="text-gray-600">Happy Clients</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-blue-600 mb-2">50+</div>
+                  <div className="text-gray-600">Team Members</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Contact Page */}
+        {currentPage === 'contact' && (
+          <div className="max-w-2xl mx-auto">
+            <h2 className="text-4xl font-bold mb-8 text-gray-800">Contact Us</h2>
+            <div className="bg-white p-8 rounded-xl shadow-lg">
+              <form className="space-y-6">
+                <div>
+                  <label className="block text-gray-700 mb-2 font-semibold">Name</label>
+                  <input type="text" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                </div>
+                <div>
+                  <label className="block text-gray-700 mb-2 font-semibold">Email</label>
+                  <input type="email" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                </div>
+                <div>
+                  <label className="block text-gray-700 mb-2 font-semibold">Message</label>
+                  <textarea rows="4" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+                </div>
+                <button type="submit" className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+                  Send Message
+                </button>
+              </form>
+              <div className="mt-8 pt-8 border-t">
+                <h3 className="font-bold text-xl mb-4">Get in Touch</h3>
+                <p className="text-gray-600 mb-2">📧 info@techsolution.com</p>
+                <p className="text-gray-600 mb-2">📱 +1 (555) 123-4567</p>
+                <p className="text-gray-600">📍 123 Tech Street, Silicon Valley, CA 94025</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
+
+      {/* Login Modal */}
+      {showLoginModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-8 max-w-md w-full">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold">Login</h3>
+              <button onClick={() => setShowLoginModal(false)} className="text-gray-500 hover:text-gray-700">
+                <X size={24} />
+              </button>
+            </div>
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div>
+                <label className="block text-gray-700 mb-2">Username</label>
+                <input
+                  type="text"
+                  value={loginForm.username}
+                  onChange={(e) => setLoginForm({...loginForm, username: e.target.value})}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 mb-2">Password</label>
+                <input
+                  type="password"
+                  value={loginForm.password}
+                  onChange={(e) => setLoginForm({...loginForm, password: e.target.value})}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  required
+                />
+              </div>
+              <button type="submit" className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+                Login
+              </button>
+              <div className="text-sm text-gray-600 mt-4">
+                <p>Demo credentials:</p>
+                <p>Admin: admin / admin123</p>
+                <p>User: user / user123</p>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Footer */}
+      <footer className="bg-[#1a2847] text-white mt-16 py-8">
+        <div className="container mx-auto px-4 text-center">
+          <p>&copy; 2026 Tech Solution. All rights reserved.</p>
+          <p className="text-blue-200 text-sm mt-2">Powering Innovation Through Technology</p>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default TechSolutionWebsite;
