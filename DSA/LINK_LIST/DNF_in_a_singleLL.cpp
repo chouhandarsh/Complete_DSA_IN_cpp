@@ -52,7 +52,10 @@ Node* DNF(Node* head){
         temp= temp->next;
 
     }
-    if(oneHead->next )
+    zero->next = one->next;
+    one->next = two->next;
+    two->next = nullptr;
+    return head0->next;
 }
 int main(){
 
