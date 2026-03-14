@@ -55,7 +55,8 @@ Node* DNF(Node* head){
     zero->next = one->next;
     one->next = two->next;
     two->next = nullptr;
-    return head0->next;
+    return head->next;
+
 }
 int main(){
 
