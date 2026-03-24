@@ -45,6 +45,7 @@ Node* delNode(Node* root,int key){
     // to find the inorder sucessor of  the data when we will find then we will replace that Node with the inorder sucessor with the node which we want to delete then we will
     // delete the inorder sucessor in this way the BST prperty will be preservesd
     // the. inorder sucessor is the leftmost node in the rightmost subtree
+    // we wil start from the right odf te root and then we will go to the exteme left
     if(root==NULL){
         return NULL;
 
