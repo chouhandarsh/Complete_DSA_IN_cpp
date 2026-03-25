@@ -16,7 +16,7 @@ public:
 int idx=-1;
 Node* BuildTree(vector<int> arr){
     idx++;
-    if(arr[idx]==-1){
+    if(idx>=arr.size()||arr[idx]==-1){
         return NULL;
     }
     Node* node = new Node(arr[idx]);
