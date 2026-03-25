@@ -2,11 +2,11 @@
 using namespace std;
 class Graph{
     int V;
-    list<int> *l;
+    vector<list<int>> l;
 public:
     Graph(int V){
         this->V=V;
-        l= new list<int>[V];
+        l.resize(V);
     }
     void addEdge(int v, int u){
         l[v].push_back(u);
